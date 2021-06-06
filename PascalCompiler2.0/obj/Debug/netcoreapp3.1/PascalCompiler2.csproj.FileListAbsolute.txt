@@ -1,0 +1,13 @@
+C:\Users\lives\source\repos\PascalCompiler2.0\PascalCompiler2.0\obj\Debug\netcoreapp3.1\PascalCompiler2.csprojAssemblyReference.cache
+C:\Users\lives\source\repos\PascalCompiler2.0\PascalCompiler2.0\obj\Debug\netcoreapp3.1\PascalCompiler2.AssemblyInfoInputs.cache
+C:\Users\lives\source\repos\PascalCompiler2.0\PascalCompiler2.0\obj\Debug\netcoreapp3.1\PascalCompiler2.AssemblyInfo.cs
+C:\Users\lives\source\repos\PascalCompiler2.0\PascalCompiler2.0\obj\Debug\netcoreapp3.1\PascalCompiler2.csproj.CoreCompileInputs.cache
+C:\Users\lives\source\repos\PascalCompiler2.0\PascalCompiler2.0\bin\Debug\netcoreapp3.1\PascalCompiler2.exe
+C:\Users\lives\source\repos\PascalCompiler2.0\PascalCompiler2.0\bin\Debug\netcoreapp3.1\PascalCompiler2.deps.json
+C:\Users\lives\source\repos\PascalCompiler2.0\PascalCompiler2.0\bin\Debug\netcoreapp3.1\PascalCompiler2.runtimeconfig.json
+C:\Users\lives\source\repos\PascalCompiler2.0\PascalCompiler2.0\bin\Debug\netcoreapp3.1\PascalCompiler2.runtimeconfig.dev.json
+C:\Users\lives\source\repos\PascalCompiler2.0\PascalCompiler2.0\bin\Debug\netcoreapp3.1\PascalCompiler2.dll
+C:\Users\lives\source\repos\PascalCompiler2.0\PascalCompiler2.0\bin\Debug\netcoreapp3.1\PascalCompiler2.pdb
+C:\Users\lives\source\repos\PascalCompiler2.0\PascalCompiler2.0\obj\Debug\netcoreapp3.1\PascalCompiler2.dll
+C:\Users\lives\source\repos\PascalCompiler2.0\PascalCompiler2.0\obj\Debug\netcoreapp3.1\PascalCompiler2.pdb
+C:\Users\lives\source\repos\PascalCompiler2.0\PascalCompiler2.0\obj\Debug\netcoreapp3.1\PascalCompiler2.genruntimeconfig.cache

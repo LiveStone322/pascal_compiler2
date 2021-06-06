@@ -1,0 +1,29 @@
+__________________________
+
+| Лексический анализатор |
+__________________________
+
+0:0	PROGRAMSY 
+0:8	IDENT test1
+0:13	SEMICOLON 
+1:0	BEGINSY 
+2:2	IDENT writeln
+2:9	LEFT_BRACKET 
+2:10	STRING_CONST 
+2:23	RIGHT_BRACKET 
+2:24	SEMICOLON 
+3:2	IDENT writeln
+3:9	LEFT_BRACKET 
+3:10	INT_CONST 
+3:12	PLUS 
+3:14	INT_CONST 
+3:15	RIGHT_BRACKET 
+3:16	SEMICOLON 
+4:0	ENDSY 
+4:3	FINISH 
+
+_____________________________
+
+| Синтаксический анализатор |
+_____________________________
+
