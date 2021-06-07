@@ -28,6 +28,7 @@ namespace PascalCompiler2
                 ioController.WriteLine(errorController.GetAllErrors());
                 goto Finish;
             }
+            else ioController.WriteLine("Ошибок нет\n");
             ioController.WriteLine(lexer.GetAllTokens());
 
             /*
@@ -35,6 +36,15 @@ namespace PascalCompiler2
              */
             printPhase("Синтаксический анализатор");
             var syntaxer = new Syntaxer(tokens, errorController);
+            syntaxer.Start();
+
+            if (errorController.AnyErrors())
+            {
+                ioController.WriteLine("Возникли ошибки...");
+                ioController.WriteLine(errorController.GetAllErrors());
+                goto Finish;
+            }
+            else ioController.WriteLine("Ошибок нет\n");
 
             /*
              * close files

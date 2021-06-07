@@ -38,7 +38,7 @@ namespace PascalCompiler2
             CHAR,
             STRING,
             BOOLEAN,
-            IDENT,              
+            IDENT,
             FLOAT_CONST,
             INT_CONST,
             STRING_CONST,
@@ -143,6 +143,54 @@ namespace PascalCompiler2
             {"program", Tags.PROGRAMSY },
             {"function", Tags.FUNCTIONSY },
             {"procedure", Tags.PROCEDURESY },
+        };
+
+        public static readonly Tags[] plusMinus = new Tags[] { Tags.PLUS, Tags.MINUS };
+        public static readonly Tags[] starSlash = new Tags[] { Tags.STAR, Tags.SLASH };
+        public static readonly Tags[] divMod = new Tags[] { Tags.DIVSY, Tags.MODSY };
+        public static readonly Tags[] booleanOperators = new Tags[] { Tags.ANDSY, Tags.ORSY, Tags.NOTSY };
+        public static readonly Tags[] booleanOperatorsExceptNot = new Tags[] { Tags.ANDSY, Tags.ORSY };
+
+        public enum Places
+        {
+            PROGRAM,
+            VAR_BLOCK,
+            VAR_DECLARATION,
+            TYPE_BLOCK,
+            TYPE_DECLARATION,
+            TYPE,
+            IF,
+            WHILE,
+            FOR,
+            BEGIN_END,
+            BEGIN_END_SMALL,
+            STATEMENT,
+            EXPRESSION,
+        }
+
+        public static readonly Dictionary<Places, Tags[]> followers = new Dictionary<Places, Tags[]>()
+        {
+            { Places.PROGRAM, new Tags[] { Tags.POINT } },
+            { Places.VAR_BLOCK, new Tags[] { Tags.IDENT, Tags.TYPESY, Tags.BEGINSY, Tags.SEMICOLON } },
+            { Places.VAR_DECLARATION, new Tags[] { Tags.IDENT, Tags.TYPESY, Tags.BEGINSY, Tags.SEMICOLON } },
+            { Places.TYPE_BLOCK, new Tags[] { Tags.IDENT, Tags.VARSY, Tags.BEGINSY, Tags.SEMICOLON } },
+            { Places.TYPE_DECLARATION, new Tags[] { Tags.IDENT, Tags.VARSY, Tags.BEGINSY, Tags.SEMICOLON } },
+            { Places.TYPE, new Tags[] { Tags.IDENT, Tags.VARSY, Tags.BEGINSY, Tags.SEMICOLON } },
+            { Places.IF, new Tags[] { Tags.IDENT, Tags.ENDSY } },
+            { Places.WHILE, new Tags[] { Tags.IDENT, Tags.ENDSY } },
+            { Places.FOR, new Tags[] { Tags.IDENT, Tags.SEMICOLON } },
+            { Places.BEGIN_END, new Tags[] { Tags.IDENT, Tags.SEMICOLON } },
+            { Places.BEGIN_END_SMALL, new Tags[] { Tags.IDENT, Tags.SEMICOLON } },
+            { Places.STATEMENT, new Tags[] { Tags.IDENT, Tags.SEMICOLON } },
+            { Places.EXPRESSION, new Tags[] { Tags.IDENT, Tags.SEMICOLON } },
+        };
+
+        public static readonly Dictionary<Tags, Tags> pairs = new Dictionary<Tags, Tags>()
+        {
+            {Tags.BEGINSY, Tags.ENDSY },
+            {Tags.LEFT_BRACKET, Tags.RIGHT_BRACKET },
+            {Tags.LEFT_SQ_BRACKET, Tags.RIGHT_SQ_BRACKET },
+            {Tags.LEFT_F_BRACKET, Tags.RIGHT_F_BRACKET },
         };
     }
 }

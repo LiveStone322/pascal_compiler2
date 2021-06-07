@@ -8,19 +8,24 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\lives\\.nuget\\packages\\": {}
+    "C:\\Users\\Антон\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\lives\\source\\repos\\PascalCompiler2.0\\PascalCompiler2.0\\PascalCompiler2.csproj",
+      "projectUniqueName": "D:\\Repos\\pascal_compiler2\\PascalCompiler2.0\\PascalCompiler2.csproj",
       "projectName": "PascalCompiler2",
-      "projectPath": "C:\\Users\\lives\\source\\repos\\PascalCompiler2.0\\PascalCompiler2.0\\PascalCompiler2.csproj",
-      "packagesPath": "C:\\Users\\lives\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\lives\\source\\repos\\PascalCompiler2.0\\PascalCompiler2.0\\obj\\",
+      "projectPath": "D:\\Repos\\pascal_compiler2\\PascalCompiler2.0\\PascalCompiler2.csproj",
+      "packagesPath": "C:\\Users\\Антон\\.nuget\\packages\\",
+      "outputPath": "D:\\Repos\\pascal_compiler2\\PascalCompiler2.0\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\lives\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Антон\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -60,7 +65,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
       }
     }
   }

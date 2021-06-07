@@ -69,6 +69,7 @@ namespace PascalCompiler2
 
         private Models.Tags OprimizedKeywordSearch(string searchValue)
         {
+            if (searchValue == "true" || searchValue == "false") return Models.Tags.BOOLEAN_CONST;
             foreach (var k in Models.keywords)
             {
                 if (k.Key == searchValue) return k.Value;
