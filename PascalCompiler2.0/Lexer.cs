@@ -82,7 +82,7 @@ namespace PascalCompiler2
             var result = "";
             foreach (var e in tokens)
             {
-               result += $"{e.lineIndex}:{e.charIndex}\t{(Models.Tags)e.tag} {(e.tag == Models.Tags.IDENT ? e.val : "")}\n";
+               result += $"{e.lineIndex}:{e.charIndex}{ (e.lineIndex < 10 && e.charIndex < 10 ? "\t" : "") }\t{e.tag} {(e.tag == Models.Tags.IDENT ? e.val : "")}\n";
             }
             return result;
         }
@@ -107,7 +107,7 @@ namespace PascalCompiler2
                     lex += GetLexeme(keepWhitespaces: true);
                     if (nextChar != '\"')
                     {
-                        ec.AddError(lineIndex, charIndex, Models.ErrorCodes.NO_ENDING_DOUBLE_QUOTE, Models.ErrorTypes.Lex, cc.curLine);
+                        ec.AddError(lineIndex, charIndex, Models.ErrorCodes.NO_ENDING_DOUBLE_QUOTE, cc.curLine);
                         continue;
                     }
                     else
@@ -122,7 +122,7 @@ namespace PascalCompiler2
                     if (nextChar != '\'')
                     {
 
-                        ec.AddError(lineIndex, charIndex, Models.ErrorCodes.NO_ENDING_SINGLE_QUOTE, Models.ErrorTypes.Lex, cc.curLine);
+                        ec.AddError(lineIndex, charIndex, Models.ErrorCodes.NO_ENDING_SINGLE_QUOTE, cc.curLine);
                         continue;
                     }
                     else
@@ -141,7 +141,7 @@ namespace PascalCompiler2
                         var floatPart = GetLexeme();
                         if (floatPart == ".")
                         {
-                            ec.AddError(lineIndex, charIndex, Models.ErrorCodes.CONST_ERROR, Models.ErrorTypes.Lex, cc.curLine);
+                            ec.AddError(lineIndex, charIndex, Models.ErrorCodes.CONST_ERROR, cc.curLine);
                             continue;
                         }
                         lex += '.' + floatPart;
@@ -152,7 +152,7 @@ namespace PascalCompiler2
                         }
                         catch(Exception)
                         {
-                            ec.AddError(lineIndex, charIndex, Models.ErrorCodes.CONST_ERROR, Models.ErrorTypes.Lex, cc.curLine);
+                            ec.AddError(lineIndex, charIndex, Models.ErrorCodes.CONST_ERROR, cc.curLine);
                             continue;
                         }
                     }
@@ -165,7 +165,7 @@ namespace PascalCompiler2
                         }
                         catch (Exception)
                         {
-                            ec.AddError(lineIndex, charIndex, Models.ErrorCodes.CONST_ERROR, Models.ErrorTypes.Lex, cc.curLine);
+                            ec.AddError(lineIndex, charIndex, Models.ErrorCodes.CONST_ERROR, cc.curLine);
                             continue;
                         }
                     }
@@ -188,6 +188,18 @@ namespace PascalCompiler2
                             break;
                         case ')':
                             token = NewToken(Models.Tags.RIGHT_BRACKET, false);
+                            break;
+                        case '[':
+                            token = NewToken(Models.Tags.LEFT_SQ_BRACKET, false);
+                            break;
+                        case ']':
+                            token = NewToken(Models.Tags.RIGHT_SQ_BRACKET, false);
+                            break;
+                        case '{':
+                            token = NewToken(Models.Tags.LEFT_F_BRACKET, false);
+                            break;
+                        case '}':
+                            token = NewToken(Models.Tags.RIGHT_F_BRACKET, false);
                             break;
                         case ',':
                             token = NewToken(Models.Tags.COMMA, false);
@@ -231,6 +243,9 @@ namespace PascalCompiler2
                                 cc.NextChar();
                             }
                             else token = NewToken(Models.Tags.POINT, false);
+                            break;
+                        case '=':
+                            token = NewToken(Models.Tags.EQUAL, false);
                             break;
                         case '+':
                             token = NewToken(Models.Tags.PLUS, false);

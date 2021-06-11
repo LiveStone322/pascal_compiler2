@@ -94,6 +94,12 @@ namespace PascalCompiler2
             NO_ENDING_SINGLE_QUOTE,
             CONST_ERROR,
             SYNTAX_ERROR,
+            SEMANTIC_ERROR,
+            NAME_EXISTS,
+            TYPE_EXISTS,
+            UNKNOWN_TYPE,
+            UNKNOWN_IDENT,
+            WRONG_TYPE,
         }
 
         public static readonly Dictionary<ErrorCodes, string> descriptions = new Dictionary<ErrorCodes, string>()
@@ -103,6 +109,12 @@ namespace PascalCompiler2
             { ErrorCodes.NO_ENDING_SINGLE_QUOTE, "Не хватает закрывающего символа '" },
             { ErrorCodes.CONST_ERROR, "Ошибочная константа" },
             { ErrorCodes.SYNTAX_ERROR, "Ожидалось " },
+            { ErrorCodes.SEMANTIC_ERROR, "Семантическая ошибка " },
+            { ErrorCodes.NAME_EXISTS, "Такое имя уже существует " },
+            { ErrorCodes.TYPE_EXISTS, "Такой тип уже существует " },
+            { ErrorCodes.UNKNOWN_TYPE, "Неизвестный тип " },
+            { ErrorCodes.UNKNOWN_IDENT, "Неизвестный идентификатор " },
+            { ErrorCodes.WRONG_TYPE, "Неверный тип " },
         };
 
         public static readonly char[] delimeters = new char[] { '\0', ',', '\'', '\"', '.', '(', ')', '[', ']', ';', ':', '=', '<', '>', '+', '-', '*', '/', '&' };
@@ -150,6 +162,7 @@ namespace PascalCompiler2
         public static readonly Tags[] divMod = new Tags[] { Tags.DIVSY, Tags.MODSY };
         public static readonly Tags[] booleanOperators = new Tags[] { Tags.ANDSY, Tags.ORSY, Tags.NOTSY };
         public static readonly Tags[] booleanOperatorsExceptNot = new Tags[] { Tags.ANDSY, Tags.ORSY };
+        public static readonly Tags[] compareOperators = new Tags[] { Tags.EQUAL, Tags.GREATER, Tags.GREATER_EQ, Tags.LESS, Tags.LESS_EQ };
 
         public enum Places
         {
@@ -191,6 +204,35 @@ namespace PascalCompiler2
             {Tags.LEFT_BRACKET, Tags.RIGHT_BRACKET },
             {Tags.LEFT_SQ_BRACKET, Tags.RIGHT_SQ_BRACKET },
             {Tags.LEFT_F_BRACKET, Tags.RIGHT_F_BRACKET },
+        };
+
+        public enum Types
+        {
+            INT,
+            FLOAT,
+            CHAR,
+            STRING,
+            BOOL,
+            VOID
+        }
+
+        public static readonly Dictionary<Types, string> typeNames = new Dictionary<Types, string>()
+        {
+            { Types.INT, "integer" },
+            { Types.FLOAT, "real" },
+            { Types.CHAR, "char" },
+            { Types.STRING, "string" },
+            { Types.BOOL, "boolean" },
+            { Types.VOID, "" },
+        };
+
+        public static readonly Dictionary<string, Types> typeEnums = new Dictionary<string, Types>()
+        {
+            { "integer", Types.INT },
+            { "real", Types.FLOAT },
+            { "char", Types.CHAR },
+            { "string", Types.STRING },
+            { "boolean", Types.BOOL },
         };
     }
 }

@@ -11,26 +11,20 @@ namespace PascalCompiler2
         int newCharInLineIndex;
         Models.ErrorCodes errorCode;
 
-        Models.ErrorTypes type;
-
-        string expected;
-        string got;
+        string info;
         string codeLine;
 
         const int MAX_CODE_LENGTH = 60;
         const int MAX_CODE_LENGTH_HALF = MAX_CODE_LENGTH / 2;
 
-        public Error(int lineIndex, int charInLineIndex, Models.ErrorCodes errorCode,
-            Models.ErrorTypes type = Models.ErrorTypes.Lex, string codeLine = "", string expected = "", string got = "")
+        public Error(int lineIndex, int charInLineIndex, Models.ErrorCodes errorCode, string codeLine = "", string info = "")
         {
             this.lineIndex = lineIndex;
             this.charInLineIndex = newCharInLineIndex = charInLineIndex;
             this.errorCode = errorCode;
-            this.type = type;
 
             this.codeLine = codeLine;
-            this.expected = expected;
-            this.got = got;
+            this.info = info;
 
             if (codeLine.Length > MAX_CODE_LENGTH)
             {
@@ -47,18 +41,10 @@ namespace PascalCompiler2
 
         public string GetErrorString()
         {
-            switch (type)
-            {
-                case Models.ErrorTypes.Lex:
-                    return $"| ОШИБКА E{(int)errorCode} на ({lineIndex}, {charInLineIndex}): {GetErrorDesciprion()}\n" +
-                      $"| {codeLine}\n" + 
-                      $"| {getCodePointer()}\n";
-                case Models.ErrorTypes.Synt:
-                    return $"| ОШИБКА E{(int)errorCode} на ({lineIndex}, {charInLineIndex}): Ожидалось {expected}, получили {got}\n";
-                case Models.ErrorTypes.Sem:
-                    return $"| ОШИБКА E{(int)errorCode} на ({lineIndex}, {charInLineIndex}): Ожидалось {expected}, получили {got}\n";
-                default: return "";
-            }
+            return $"| ОШИБКА E{(int)errorCode} на ({lineIndex}, {charInLineIndex}): {GetErrorDesciprion()}\n" +
+                      (codeLine != "" ? $"| {codeLine}\n" : "") +
+                      (codeLine != "" ? $"| {getCodePointer()}\n" : "") +
+                      (info != "" ? $"| {info}\n" : "");
         }
 
         private string GetErrorDesciprion()

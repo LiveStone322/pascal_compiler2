@@ -6,21 +6,9 @@ namespace PascalCompiler2
     {
         List<Error> errors = new List<Error>();
 
-        public void AddError(int lineIndex, int charInLineInde, Models.ErrorCodes errorCode, 
-            Models.ErrorTypes type, string codeLine = "", string expected = "", string got = "")
+        public void AddError(int lineIndex, int charInLineInde, Models.ErrorCodes errorCode, string codeLine = "", string info = "")
         {
-            switch (type)
-            {
-                case Models.ErrorTypes.Lex:
-                    errors.Add(new Error(lineIndex, charInLineInde, errorCode, type, codeLine));
-                    break;
-                case Models.ErrorTypes.Synt:
-                    errors.Add(new Error(lineIndex, charInLineInde, errorCode, type, "", expected, got));
-                    break;
-                case Models.ErrorTypes.Sem:
-                    errors.Add(new Error(lineIndex, charInLineInde, errorCode, type, "", expected, got));
-                    break;
-            }
+            errors.Add(new Error(lineIndex, charInLineInde, errorCode, codeLine, info));
         }
 
         public string GetAllErrors()

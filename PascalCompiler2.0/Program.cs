@@ -5,52 +5,66 @@ namespace PascalCompiler2
 {
     class Program
     {
-        const string FILE_NAME = "1.pas";
+        static readonly string[] FILE_NAMES = new string[] { "Src\\1.pas", "Src\\2.pas", "Src\\3.pas", "Src\\4.pas" };
 
-        static IOController ioController = new IOController(FILE_NAME);
+        static IOController ioController;
 
         static void Main(string[] args)
         {
-            // controllers
-            CodeController codeController = new CodeController(ioController);
-            ErrorController errorController = new ErrorController();
-
-            /*
-             * lexer
-             */
-            printPhase("Лексический анализатор");
-            var lexer = new Lexer(ioController, codeController, errorController);
-            var tokens = lexer.List();
-
-            if (errorController.AnyErrors())
+            foreach (var f in FILE_NAMES)
             {
-                ioController.WriteLine("Возникли ошибки...");
-                ioController.WriteLine(errorController.GetAllErrors());
-                goto Finish;
+                try
+                {
+                    ioController = new IOController(f);
+                    // controllers
+                    CodeController codeController = new CodeController(ioController);
+                    ErrorController errorController = new ErrorController();
+
+                    /* 
+                     * lexer
+                     */
+                    printPhase("Лексический анализатор");
+                    var lexer = new Lexer(ioController, codeController, errorController);
+                    var tokens = lexer.List();
+
+                    if (errorController.AnyErrors())
+                    {
+                        ioController.WriteLine("Возникли ошибки...");
+                        ioController.WriteLine(errorController.GetAllErrors());
+                        continue; 
+                    }
+                    else ioController.WriteLine("Ошибок нет\n");
+                    ioController.WriteLine(lexer.GetAllTokens());
+
+                    /*
+                     * syntaxer
+                     */
+                    printPhase("Синтаксический и семантический анализатор");
+                    var syntaxer = new SemSyntaxer(tokens, errorController);
+                    syntaxer.Start();
+
+                    if (errorController.AnyErrors())
+                    {
+                        ioController.WriteLine("Возникли ошибки...");
+                        ioController.WriteLine(errorController.GetAllErrors());
+                        continue;
+                    }
+                    else ioController.WriteLine("Ошибок нет\n");
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Ошибка: " + e.Message);
+                }
+                finally
+                {
+                    /*
+                     * close files
+                     */
+                    ioController.Dispose();
+                }
             }
-            else ioController.WriteLine("Ошибок нет\n");
-            ioController.WriteLine(lexer.GetAllTokens());
-
-            /*
-             * syntaxer
-             */
-            printPhase("Синтаксический анализатор");
-            var syntaxer = new Syntaxer(tokens, errorController);
-            syntaxer.Start();
-
-            if (errorController.AnyErrors())
-            {
-                ioController.WriteLine("Возникли ошибки...");
-                ioController.WriteLine(errorController.GetAllErrors());
-                goto Finish;
-            }
-            else ioController.WriteLine("Ошибок нет\n");
-
-            /*
-             * close files
-             */
-            Finish:
-            ioController.Dispose();
+            
         }
 
         private static void PrintLine(int length = 16)
