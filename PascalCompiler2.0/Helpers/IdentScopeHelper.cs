@@ -11,11 +11,18 @@ namespace PascalCompiler2.Helpers
         public List<TypeTableEntity> Types = new List<TypeTableEntity>();
         public List<IdentTableEntity> Idents = new List<IdentTableEntity>();
 
+        ErrorController errorController;
+
+        public IdentScopeTree(ErrorController ec)
+        {
+            this.errorController = ec;
+        }
+
         public IdentTableEntity AddIdent(string name, IdentUsageType usageType = IdentUsageType.CONST, TypeTableEntity type = null)
         {
             if (FindIdent(name) != null)
             {
-                Console.WriteLine("Идентификатор есть");
+                errorController.AddError(-1, -1, Models.ErrorCodes.NAME_EXISTS, "", name);
                 return null;
             }
 
@@ -30,12 +37,12 @@ namespace PascalCompiler2.Helpers
 
             if (typeEntity == null)
             {
-                Console.WriteLine("Типа нет");
+                errorController.AddError(-1, -1, Models.ErrorCodes.UNKNOWN_TYPE, "", name);
                 return null;
             }
             if (FindIdent(name) != null)
             {
-                Console.WriteLine("Идентификатор есть");
+                errorController.AddError(-1, -1, Models.ErrorCodes.NAME_EXISTS, "", name);
                 return null;
             }
 
@@ -49,7 +56,7 @@ namespace PascalCompiler2.Helpers
         {
             if (FindType(name) != null)
             {
-                Console.WriteLine("Тип существует");
+                errorController.AddError(-1, -1, Models.ErrorCodes.TYPE_EXISTS, "", name);
                 return null;
             }
 
@@ -62,7 +69,7 @@ namespace PascalCompiler2.Helpers
         {
             if (FindType(name) != null)
             {
-                Console.WriteLine("Тип существует");
+                errorController.AddError(-1, -1, Models.ErrorCodes.TYPE_EXISTS, "", name);
                 return null;
             }
             if (type.Name == "")
@@ -80,7 +87,7 @@ namespace PascalCompiler2.Helpers
         {
             if (FindType(type.Name) != null)
             {
-                Console.WriteLine("Тип существует");
+                errorController.AddError(-1, -1, Models.ErrorCodes.TYPE_EXISTS, "", type.Name);
                 return null;
             }
             Types.Add(type);
@@ -116,12 +123,15 @@ namespace PascalCompiler2.Helpers
 
     public class IdentScopeHelper
     {
-        IdentScopeTree root = new IdentScopeTree();
+        IdentScopeTree root ;
+        ErrorController errorController;
 
         public IdentScopeTree cur;
 
-        public IdentScopeHelper()
+        public IdentScopeHelper(ErrorController ec)
         {
+            errorController = ec;
+            root = new IdentScopeTree(ec);
             cur = root;
             InitRootScope();
         }
@@ -129,7 +139,7 @@ namespace PascalCompiler2.Helpers
         public void OpenScope()
         {
             var oldCur = cur;
-            cur = new IdentScopeTree();
+            cur = new IdentScopeTree(errorController);
             oldCur.Children.Add(cur);
             cur.Parent = oldCur;
         }

@@ -17,7 +17,7 @@ namespace PascalCompiler2
             this.tokens = new LinkedList<Token>(tokens);
             errorController = ec;
             curTokenNode = this.tokens.First;
-            ish = new IdentScopeHelper();
+            ish = new IdentScopeHelper(ec);
         }
 
         private Token token

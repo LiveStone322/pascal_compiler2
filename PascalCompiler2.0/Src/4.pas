@@ -2,6 +2,7 @@
 type a = array [0 .. 9] of integer;
 var b: a;
 	c, d: boolean;
+	d: integer;
 begin
   writeln("Hello world!");
   b := not false and true or false;

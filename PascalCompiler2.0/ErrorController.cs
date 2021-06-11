@@ -2,7 +2,7 @@
 
 namespace PascalCompiler2
 {
-    class ErrorController
+    public class ErrorController
     {
         List<Error> errors = new List<Error>();
 

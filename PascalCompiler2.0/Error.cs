@@ -41,7 +41,7 @@ namespace PascalCompiler2
 
         public string GetErrorString()
         {
-            return $"| ОШИБКА E{(int)errorCode} на ({lineIndex}, {charInLineIndex}): {GetErrorDesciprion()}\n" +
+            return $"| ОШИБКА E{(int)errorCode} {( (lineIndex == -1 && charInLineIndex == -1) ? "" : $"на ({lineIndex}, {charInLineIndex})")}: {GetErrorDesciprion()}\n" +
                       (codeLine != "" ? $"| {codeLine}\n" : "") +
                       (codeLine != "" ? $"| {getCodePointer()}\n" : "") +
                       (info != "" ? $"| {info}\n" : "");

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PascalCompiler2
 {
-    static class Models
+    public static class Models
     {
         public enum Tags
         {
@@ -87,6 +87,7 @@ namespace PascalCompiler2
             Synt,
             Sem
         }
+
         public enum ErrorCodes
         {
             ERROR,
