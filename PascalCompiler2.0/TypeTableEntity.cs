@@ -13,10 +13,10 @@
 
         public bool IsCompatableTo(TypeTableEntity type)
         {
+            if (type == null) return true;
+
             var basic1 = GetBasicType();
             var basic2 = type.GetBasicType();
-
-            if (type == null) return true;
 
             if (basic1.Type == TypeTableTypeEnums.SCALAR && basic2.Type == TypeTableTypeEnums.SCALAR)
             {

@@ -20,7 +20,7 @@ namespace PascalCompiler2.Helpers
 
         public IdentTableEntity AddIdent(string name, IdentUsageType usageType = IdentUsageType.CONST, TypeTableEntity type = null)
         {
-            if (FindIdent(name) != null)
+            if (Idents.Find(t => t.Name == name) != null)
             {
                 errorController.AddError(-1, -1, Models.ErrorCodes.NAME_EXISTS, "", name);
                 return null;
@@ -38,6 +38,7 @@ namespace PascalCompiler2.Helpers
             if (typeEntity == null)
             {
                 errorController.AddError(-1, -1, Models.ErrorCodes.UNKNOWN_TYPE, "", name);
+                AddType(TypeTableTypeEnums.SCALAR, "", null);
                 return null;
             }
             if (FindIdent(name) != null)

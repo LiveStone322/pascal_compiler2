@@ -19,8 +19,8 @@ namespace PascalCompiler2
 
         public Error(int lineIndex, int charInLineIndex, Models.ErrorCodes errorCode, string codeLine = "", string info = "")
         {
-            this.lineIndex = lineIndex;
-            this.charInLineIndex = newCharInLineIndex = charInLineIndex;
+            this.lineIndex = lineIndex + 1;
+            this.charInLineIndex = newCharInLineIndex = charInLineIndex + 1;
             this.errorCode = errorCode;
 
             this.codeLine = codeLine;

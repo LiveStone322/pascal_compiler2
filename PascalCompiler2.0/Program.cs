@@ -5,7 +5,7 @@ namespace PascalCompiler2
 {
     class Program
     {
-        static readonly string[] FILE_NAMES = new string[] { "Src\\1.pas", "Src\\2.pas", "Src\\3.pas", "Src\\4.pas" };
+        static readonly string[] FILE_NAMES = new string[] { "Src\\1.pas", "Src\\2.pas", "Src\\3.pas", "Src\\4.pas"};
 
         static IOController ioController;
 

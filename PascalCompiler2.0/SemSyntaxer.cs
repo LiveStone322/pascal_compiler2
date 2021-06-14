@@ -12,6 +12,8 @@ namespace PascalCompiler2
         ErrorController errorController; 
         IdentScopeHelper ish;
 
+        int brackets = 0;
+
         public SemSyntaxer (List<Token> tokens, ErrorController ec)
         {
             this.tokens = new LinkedList<Token>(tokens);
@@ -52,7 +54,7 @@ namespace PascalCompiler2
             errorController.AddError(token.lineIndex, token.charIndex, Models.ErrorCodes.SYNTAX_ERROR, "",
                 $"Ожидалось {sym}, полчили { symbol }");
             Skip(Models.followers.GetValueOrDefault(place, new Models.Tags[] { }));
-            return "";
+            return "__error__";
         }
 
         private void VarOrFunc()
@@ -80,6 +82,7 @@ namespace PascalCompiler2
                         NextSym();
                         break;
                     case Models.Tags.LEFT_BRACKET:
+                        brackets++;
                         NextSym();
                         if (symbol != Models.Tags.RIGHT_BRACKET) Expression();
                         while (symbol == Models.Tags.COMMA)
@@ -87,7 +90,11 @@ namespace PascalCompiler2
                             NextSym();
                             Expression();
                         }
-                        Accept(Models.Tags.RIGHT_BRACKET, Models.Places.EXPRESSION);
+                        if (brackets > 0)
+                        {
+                            if (Accept(Models.Tags.RIGHT_BRACKET, Models.Places.EXPRESSION) != "__error__")
+                                brackets--;
+                        }
                         break;
                 }
             }
@@ -103,7 +110,7 @@ namespace PascalCompiler2
             }
             if (symbol == Models.Tags.NOTSY)
             {
-                if (!type_.IsCompatableTo(GetTypeFromBasicType(Models.Tags.BOOLEAN_CONST)))
+                if (type_ == null || !type_.IsCompatableTo(GetTypeFromBasicType(Models.Tags.BOOLEAN_CONST)))
                 {
                     errorController.AddError(token.lineIndex, token.charIndex, Models.ErrorCodes.WRONG_TYPE);
                     Skip(Models.followers[Models.Places.EXPRESSION]);
@@ -142,10 +149,12 @@ namespace PascalCompiler2
                     case Models.Tags.FLOAT_CONST:
                     case Models.Tags.CHAR_CONST:
                     case Models.Tags.STRING_CONST:
+                        var curSym = symbol;
                         NextSym();
                         if (isBiArithmeticOperation(symbol))
                         {
-                            if (type_.IsCompatableTo(GetTypeFromBasicType(symbol)))
+                            NextSym();
+                            if (type_ == null || !type_.IsCompatableTo(GetTypeFromBasicType(curSym)))
                             {
                                 errorController.AddError(token.lineIndex, token.charIndex, Models.ErrorCodes.WRONG_TYPE);
                                 Skip(Models.followers[Models.Places.EXPRESSION]);
@@ -155,7 +164,8 @@ namespace PascalCompiler2
                         } 
                         else if (isBooleanOperation(symbol))
                         {
-                            if (!type_.IsCompatableTo(GetTypeFromBasicType(Models.Tags.BOOLEAN_CONST)))
+                            NextSym();
+                            if (type_ == null || !type_.IsCompatableTo(GetTypeFromBasicType(Models.Tags.BOOLEAN_CONST)))
                             {
                                 errorController.AddError(token.lineIndex, token.charIndex, Models.ErrorCodes.WRONG_TYPE);
                                 Skip(Models.followers[Models.Places.EXPRESSION]);
@@ -164,6 +174,16 @@ namespace PascalCompiler2
                             NextSym();
                             BooleanExpression(true);
                         }
+                        break;
+                    case Models.Tags.LEFT_BRACKET:
+                        brackets++;
+                        NextSym();
+                        Expression(type_);
+                        break;
+                    case Models.Tags.RIGHT_BRACKET:
+                        brackets--;
+                        NextSym();
+                        Expression(type_);
                         break;
                 }
             }
@@ -180,6 +200,7 @@ namespace PascalCompiler2
                     if (ident == null)
                     {
                         errorController.AddError(token.lineIndex, token.charIndex, Models.ErrorCodes.UNKNOWN_IDENT);
+                        ish.cur.AddIdent(token.val);
                         Skip(Models.followers[Models.Places.STATEMENT]);
                         return;
                     }
@@ -232,7 +253,7 @@ namespace PascalCompiler2
             }
         }
 
-        private void ArithmeticExpression(TypeTableEntity type_ = null)
+        private void ArithmeticExpression(TypeTableEntity type_ = null, bool  beforeFlag = false)
         {
             TypeTableEntity type = null;
             switch (symbol)
@@ -243,11 +264,12 @@ namespace PascalCompiler2
                     if (ident == null)
                     {
                         errorController.AddError(token.lineIndex, token.charIndex, Models.ErrorCodes.UNKNOWN_IDENT);
+                        ish.cur.AddIdent(token.val);
                         Skip(Models.followers[Models.Places.STATEMENT]);
                         return;
                     }
                     type = ident.Type;
-                    if (!type_.IsCompatableTo(type))
+                    if (type_ == null || !type_.IsCompatableTo(type))
                     {
                         errorController.AddError(token.lineIndex, token.charIndex, Models.ErrorCodes.WRONG_TYPE, "", "ожидался тип " + type_.Name);
                         Skip(Models.followers[Models.Places.STATEMENT]);
@@ -257,14 +279,16 @@ namespace PascalCompiler2
                     if (isBiArithmeticOperation(symbol))
                     {
                         NextSym();
-                        ArithmeticExpression(type);
+                        ArithmeticExpression(type, true);
                     }
+                    if (symbol == Models.Tags.LEFT_BRACKET || symbol == Models.Tags.RIGHT_BRACKET)
+                        ArithmeticExpression(type_, beforeFlag);
                     break;
                 case Models.Tags.INT_CONST:
                 case Models.Tags.FLOAT_CONST:
                 case Models.Tags.CHAR_CONST:
                 case Models.Tags.STRING_CONST:
-                    if (!type_.IsCompatableTo(GetTypeFromBasicType(symbol)))
+                    if (type_ == null || !type_.IsCompatableTo(GetTypeFromBasicType(symbol)))
                     {
                         errorController.AddError(token.lineIndex, token.charIndex, Models.ErrorCodes.WRONG_TYPE, "", "ожидался тип " + type_.Name);
                         Skip(Models.followers[Models.Places.STATEMENT]);
@@ -274,7 +298,39 @@ namespace PascalCompiler2
                     if (isBiArithmeticOperation(symbol))
                     {
                         NextSym();
-                        ArithmeticExpression(GetTypeFromBasicType(symbol));
+                        ArithmeticExpression(GetTypeFromBasicType(symbol), true);
+                    }
+                    if (symbol == Models.Tags.LEFT_BRACKET || symbol == Models.Tags.RIGHT_BRACKET)
+                        ArithmeticExpression(type_, beforeFlag);
+                    break;
+                case Models.Tags.LEFT_BRACKET:
+                    brackets++;
+                    NextSym();
+                    if (isBiArithmeticOperation(symbol))
+                    {
+                        NextSym();
+                        ArithmeticExpression(type_, beforeFlag);
+                    }
+                    break;
+                case Models.Tags.RIGHT_BRACKET:
+                    brackets--;
+                    NextSym();
+                    if (isBiArithmeticOperation(symbol))
+                    {
+                        NextSym();
+                        ArithmeticExpression(type_, true);
+                    }
+                    break;
+                case Models.Tags.PLUS:
+                case Models.Tags.STAR:
+                case Models.Tags.SLASH:
+                case Models.Tags.MINUS:
+                case Models.Tags.DIVSY:
+                case Models.Tags.MODSY:
+                    if (beforeFlag)
+                    {
+                        NextSym();
+                        ArithmeticExpression(type_, true);
                     }
                     break;
                 default:
@@ -326,6 +382,7 @@ namespace PascalCompiler2
 
         private void Statement()
         {
+            string tokenVal = "";
             if (isPLusMinusOperation(symbol))
                 Expression();
             else
@@ -333,10 +390,12 @@ namespace PascalCompiler2
                 switch (symbol)
                 {
                     case Models.Tags.IDENT:
-                        var ident = ish.cur.FindIdent(Accept(Models.Tags.IDENT, Models.Places.STATEMENT));
+                        tokenVal = Accept(Models.Tags.IDENT, Models.Places.STATEMENT);
+                        var ident = ish.cur.FindIdent(tokenVal);
                         if (ident == null)
                         {
                             errorController.AddError(token.lineIndex, token.charIndex, Models.ErrorCodes.UNKNOWN_IDENT);
+                            ish.cur.AddIdent(tokenVal);
                             Skip(Models.followers[Models.Places.STATEMENT]);
                             return;
                         }
@@ -364,6 +423,7 @@ namespace PascalCompiler2
                                     NextSym();
                                     break;
                                 case Models.Tags.LEFT_BRACKET:
+                                    brackets++;
                                     NextSym();
                                     if (symbol != Models.Tags.RIGHT_BRACKET) Expression();
                                     while (symbol == Models.Tags.COMMA)
@@ -371,7 +431,12 @@ namespace PascalCompiler2
                                         NextSym();
                                         Expression();
                                     }
-                                    Accept(Models.Tags.RIGHT_BRACKET, Models.Places.STATEMENT);
+
+                                    if (brackets > 0)
+                                    {
+                                        if (Accept(Models.Tags.RIGHT_BRACKET, Models.Places.STATEMENT) != "__error__")
+                                            brackets--;
+                                    }
                                     break;
                             }
                         }

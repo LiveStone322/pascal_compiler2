@@ -31,7 +31,7 @@ __________________________
 3:5		COLON 
 3:7		IDENT boolean
 3:14	SEMICOLON 
-4:1		IDENT d
+4:1		IDENT e
 4:2		COLON 
 4:4		IDENT integer
 4:11	SEMICOLON 
@@ -56,40 +56,52 @@ __________________________
 8:9		GREATER 
 8:11	INT_CONST 
 8:12	SEMICOLON 
-9:2		IFSY 
-9:5		IDENT d
-9:7		THENSY 
-10:4	BEGINSY 
-11:2	IDENT writeln
-11:9	LEFT_BRACKET 
-11:10	STRING_CONST 
-11:13	RIGHT_BRACKET 
-11:14	SEMICOLON 
-12:2	IDENT writeln
-12:9	LEFT_BRACKET 
-12:10	STRING_CONST 
-12:13	RIGHT_BRACKET 
-12:14	SEMICOLON 
-13:1	ENDSY 
-13:4	SEMICOLON 
-14:2	ELSESY 
-14:7	IDENT writeln
-14:14	LEFT_BRACKET 
-14:15	STRING_CONST 
-14:22	RIGHT_BRACKET 
-14:23	SEMICOLON 
-15:2	WHILESY 
-15:8	IDENT d
-15:10	DOSY 
-16:4	BEGINSY 
-17:6	IDENT d
-17:8	ASSIGN 
-17:11	BOOLEAN_CONST 
-17:16	SEMICOLON 
-18:4	ENDSY 
-18:7	SEMICOLON 
-19:0	ENDSY 
-19:3	POINT 
+9:2		IDENT f
+9:4		ASSIGN 
+9:7		INT_CONST 
+9:9		GREATER 
+9:11	INT_CONST 
+9:12	SEMICOLON 
+10:2	IDENT f
+10:4	ASSIGN 
+10:7	INT_CONST 
+10:9	GREATER 
+10:11	INT_CONST 
+10:12	SEMICOLON 
+11:2	IFSY 
+11:5	IDENT d
+11:7	THENSY 
+12:4	BEGINSY 
+13:2	IDENT writeln
+13:9	LEFT_BRACKET 
+13:10	STRING_CONST 
+13:13	RIGHT_BRACKET 
+13:14	SEMICOLON 
+14:2	IDENT writeln
+14:9	LEFT_BRACKET 
+14:10	STRING_CONST 
+14:13	RIGHT_BRACKET 
+14:14	SEMICOLON 
+15:1	ENDSY 
+15:4	SEMICOLON 
+16:2	ELSESY 
+16:7	IDENT writeln
+16:14	LEFT_BRACKET 
+16:15	STRING_CONST 
+16:22	RIGHT_BRACKET 
+16:23	SEMICOLON 
+17:2	WHILESY 
+17:8	IDENT d
+17:10	DOSY 
+18:4	BEGINSY 
+19:6	IDENT d
+19:8	ASSIGN 
+19:11	BOOLEAN_CONST 
+19:16	SEMICOLON 
+20:4	ENDSY 
+20:7	SEMICOLON 
+21:0	ENDSY 
+21:3	POINT 
 
 _____________________________________________
 
@@ -97,11 +109,12 @@ _____________________________________________
 _____________________________________________
 
 Возникли ошибки...
-| ОШИБКА E6 : Такое имя уже существует 
-| d
+| ОШИБКА E10 на (8, 8): Неверный тип 
 
-| ОШИБКА E10 на (7, 7): Неверный тип 
+| ОШИБКА E10 на (9, 12): Неверный тип 
 
-| ОШИБКА E10 на (8, 9): Неверный тип 
+| ОШИБКА E9 на (10, 5): Неизвестный идентификатор 
+
+| ОШИБКА E10 на (11, 12): Неверный тип 
 
 
